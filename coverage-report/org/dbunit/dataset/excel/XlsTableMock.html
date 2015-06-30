@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JMockit Coverage Report - XlsTableMock.java</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+  <link rel='stylesheet' type='text/css' href='../../../../coverage.css'/>
+  <script type='text/javascript' src='../../../../coverage.js'></script>
+  <script type='text/javascript' src='../../../../prettify.js'></script>
+</head>
+<body onload='prettyPrint()'>
+  <table cellpadding='0' cellspacing='1'>
+    <caption>dbunit_sample\src\org\dbunit\dataset\excel\XlsTableMock.java</caption>
+    <tr>
+      <td class='line'>1</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l1s0'>package org.dbunit.dataset.excel;</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td><pre class='imports prettyprint' onclick='showHideLines(this)'><div>import mockit.Delegate;
+import mockit.Mocked;
+import mockit.NonStrictExpectations;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFDateUtil;
+</div><span>import ...</span></pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>/**
+ * {@link XlsTable}�����b�N������N���X�ł��B&lt;br/>
+ * {@link XlsTable}�̓f�t�H���g�A�N�Z�X�X�R�[�v�Ȃ̂ŁA�p�b�P�[�W�����킹�Ē�`���Ă��܂��B&lt;br/>
+ * &lt;br/>
+ * {@link XlsTable#getDateValue(HSSFCell)}��UTC���Ԃ���邽�߁A&lt;br/>
+ * Excel�ɋL�ڂ��鎞�ԁ{9���ԁiTimezone�I�t�Z�b�g�j����܂����A���̎d�l�𖳌��܂��B
+ */</div><span>/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>17</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l17s0'>public class XlsTableMock {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>19</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	public static void mockup(){</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>20</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l20s0'>		new NonStrictExpectations() {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>21</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			@Mocked(methods = {"getDateValue"})</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>22</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			XlsTable xlsTable;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>23</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			{</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>24</td><td class='count'>1</td>
+      <td><pre class='prettyprint covered' id='l24s0'>				xlsTable.getDateValue(withInstanceOf(HSSFCell.class));</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>25</td><td>&nbsp;</td>
+      <td><pre class='comment'>				//invoke(xlsTable, "getDateValue", HSSFCell.class);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>26</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l26s0'>				result = new Delegate&lt;XlsTable>() {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>27</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>					@SuppressWarnings("unused")</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>28</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				    protected Object getDateValue(HSSFCell cell)</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>29</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				    {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>30</td><td>&nbsp;</td>
+      <td><pre class='comment'>						//System.out.println("getDateValue");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>31</td><td>&nbsp;</td>
+      <td><pre class='comment'>				        //logger.debug("getDateValue(cell={}) - start", cell);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>32</td><td class='count'>8</td>
+      <td><pre class='prettyprint covered' id='l32s0'>				        double numericValue = cell.getNumericCellValue();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>33</td><td class='count'>8</td>
+      <td><pre class='prettyprint covered' id='l33s0'>				        java.util.Date date = HSSFDateUtil.getJavaDate(numericValue);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>34</td><td>&nbsp;</td>
+      <td><pre class='comment'>				        // Add the timezone offset again because it was subtracted automatically by Apache-POI (we need UTC)</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>35</td><td>&nbsp;</td>
+      <td><pre class='comment'>				        // HACK start comment out.</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>36</td><td>&nbsp;</td>
+      <td><pre class='comment'>				        //long tzOffset = TimeZone.getDefault().getOffset(date.getTime());</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>37</td><td>&nbsp;</td>
+      <td><pre class='comment'>				        //date = new Date(date.getTime() + tzOffset);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>38</td><td>&nbsp;</td>
+      <td><pre class='comment'>				        // HACK end</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>39</td><td class='count'>8</td>
+      <td><pre class='prettyprint covered' id='l39s0'>				        return new Long(date.getTime());</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>40</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				    }</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>41</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				};</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>42</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>43</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		};</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>44</td><td class='count'>1</td>
+      <td><pre class='prettyprint covered' id='l44s0'>	}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>45</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>}</pre></td>
+    </tr>
+  </table>
+</body>
+</html>

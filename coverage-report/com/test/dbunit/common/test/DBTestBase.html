@@ -1,0 +1,1251 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JMockit Coverage Report - DBTestBase.java</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+  <link rel='stylesheet' type='text/css' href='../../../../../coverage.css'/>
+  <script type='text/javascript' src='../../../../../coverage.js'></script>
+  <script type='text/javascript' src='../../../../../prettify.js'></script>
+</head>
+<body onload='prettyPrint()'>
+  <table cellpadding='0' cellspacing='1'>
+    <caption>dbunit_sample\src\com\test\dbunit\common\test\DBTestBase.java</caption>
+    <tr>
+      <td class='line'>1</td><td class='count'>4</td>
+      <td><pre class='prettyprint covered' id='l1s0'>package com.test.dbunit.common.test;</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td><pre class='imports prettyprint' onclick='showHideLines(this)'><div>import java.io.File;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Timestamp;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import mockit.Delegate;
+import mockit.Mocked;
+import mockit.NonStrictExpectations;
+
+import org.apache.commons.dbutils.DbUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.apache.commons.lang3.time.DateUtils;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.dbunit.Assertion;
+import org.dbunit.database.DatabaseConfig;
+import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.Column;
+import org.dbunit.dataset.IDataSet;
+import org.dbunit.dataset.ITable;
+import org.dbunit.dataset.ITableMetaData;
+import org.dbunit.dataset.ReplacementDataSet;
+import org.dbunit.dataset.filter.IColumnFilter;
+import org.dbunit.ext.oracle.OracleDataTypeFactory;
+import org.dbunit.operation.DatabaseOperation;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.TestName;
+
+import com.test.dbunit.common.db.DbConnection;
+import com.test.dbunit.common.db.TestConnection;
+import com.test.dbunit.common.util.DbUnitUtils;
+import com.test.dbunit.common.util.LibraryHack;
+import com.test.dbunit.common.util.StaticColumnFilter;
+import com.test.dbunit.common.util.StaticColumnFilter.PrimaryKey;
+</div><span>import ...</span></pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>/**
+ * JUnit���L�q����ۂ̊��N���X�B
+ */</div><span>/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>53</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l53s0'>public abstract class DBTestBase {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>55</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l55s0'>	private static Log <span class='static uncovered' title='Reads: 0 Writes: 0'>log</span> = LogFactory.getLog(DBTestBase.class);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>57</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	@Rule</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>58</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l58s0'>	public TestName <span class='instance uncovered' title='Reads: 0 Writes: 0'>name</span> = new TestName();</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �e�X�g�ɗ��p����R�l�N�V�����B&lt;br/>
+	 * ���̃R�l�N�V������{@link Connection#commit()}���R�[�����ꂽ�ꍇ�ł��R�~�b�g���ꂸ�A�g�����U�N�V�������p�����܂��B
+	 * �����Ƃ��āA���̃R�l�N�V�����𗘗p���Ă��������B&lt;br/>
+	 * {@link Before}�Ŋm�ۂ���A{@link After}�ŉ���܂��B&lt;br/>
+	 * ���̃R�l�N�V�����ȊO�𗘗p�������ꍇ�A{@link #newConnection()}�ŐV�����R�l�N�V�������擾���Ă��������B&lt;br/>
+	 * �V�����R�l�N�V�������擾�����ꍇ�́A�K��{@link #releaseConnection(Connection)}�ŉ��Ă��������B
+	 * @see #getRollbackDisabledConnection()
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>69</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l69s0'>	protected Connection <span class='instance uncovered' title='Reads: 0 Writes: 0'>conn</span> = null;</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �e�X�g�ɗ��p����R�l�N�V�����B&lt;br/>
+	 * �R�~�b�g�ƃ��[���o�b�N�𖳌�ɂ��Ă��܂��B&lt;br/>
+	 * ���̃R�l�N�V������{@link Connection#rollback()}���R�[�����ꂽ�ꍇ�ł����[���o�b�N����܂���B&lt;br/>
+	 * �R�~�b�g�𖳌�ɂ��Ă���ׁA���[���o�b�N�̃e�X�g���K�v�ȏꍇ�Ȃǂɗ��p���Ă��������B&lt;br/>
+	 * ���C�t�T�C�N����g�����U�N�V�����ɂ��Ă�{@link #conn}�Ɠ����ƂȂ�܂��B
+	 * @see #conn
+	 * @see #getRollbackDisabledConnection()
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>80</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l80s0'>	private Connection <span class='instance uncovered' title='Reads: 0 Writes: 0'>rollbackDisabledConn</span> = null;</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * DBUnit�𗘗p����ׂ̃R�l�N�V�����B&lt;br/>
+	 * ���C�t�T�C�N����{@link #conn}�Ɠ����ł��B
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>86</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l86s0'>	protected IDatabaseConnection <span class='instance uncovered' title='Reads: 0 Writes: 0'>dbunitConn</span> = null;</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 *
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>91</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	@BeforeClass</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>92</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	public static void beforeBaseClass() {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>94</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		log.info("DBTestBase: @BeforeClass end.");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>95</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 *
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>100</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	@AfterClass</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>101</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	public static void afterBaseClass() {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>102</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		log.info("DBTestBase: @AfterClass end.");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>103</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 *
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>109</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	@Before</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>110</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	public void beforeBase() throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>111</td><td>&nbsp;</td>
+      <td><pre class='comment'>		// �R�~�b�g�ł��Ȃ��悤��TestConnection�̃��\�b�h�������ւ��Ă���</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>112</td><td class='count'>1</td>
+      <td><pre class='prettyprint covered' id='l112s0'>		new NonStrictExpectations() {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>113</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			@Mocked(methods = { "commit" })</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>114</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			TestConnection testConnection;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>115</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			{</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>116</td><td class='count'>1</td>
+      <td><pre class='prettyprint covered' id='l116s0'>				testConnection.commit();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>117</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l117s0'>				result = new Delegate&lt;TestConnection>() {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>118</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>					@SuppressWarnings("unused")</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>119</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>					private void commit() {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>120</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l120s0'>						log.info("(Called mock commit(). Nothing to do.)");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>121</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l121s0'>					}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>122</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				};</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>123</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>124</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		};</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>126</td><td>&nbsp;</td>
+      <td><pre class='comment'>		// ���C�u�����n�b�N</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>127</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		LibraryHack.mockup();</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>129</td><td>&nbsp;</td>
+      <td><pre class='comment'>		// �e�X�g�p�R�l�N�V�����m��</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>130</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		setupConnections();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>131</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		log.info("DBTestBase: @Before end.");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>132</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 *
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>138</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	@After</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>139</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	public void afterBase() throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>140</td><td>&nbsp;</td>
+      <td><pre class='comment'>		// �e�X�g�p�R�l�N�V�������</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>141</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		if ((conn != null) && !conn.isClosed()) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>142</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			DbUtils.rollbackAndCloseQuietly(conn);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>143</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>144</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		log.info("DBTestBase: @After end.");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>145</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �V�����R�l�N�V�������擾���܂��B&lt;br/>
+	 * ���̃R�l�N�V������{@link Connection#commit()}���R�[�����ꂽ�ꍇ�ł��R�~�b�g���ꂸ�A�g�����U�N�V�������p�����܂��B
+	 * �V�����R�l�N�V�������擾�����ꍇ�́A�K��{@link #releaseConnection(Connection)}�ŉ��Ă��������B
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>153</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	private void setupConnections() throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>154</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		Connection testConn = DbConnection.getConnection();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>155</td><td>&nbsp;</td>
+      <td><pre class='comment'>		// commit �̂ݖ���</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>156</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		this.conn = testConn;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>157</td><td>&nbsp;</td>
+      <td><pre class='comment'>		// ���̃C���X�^���X��rollback����B���g�̓��C���R�l�N�V�����Ɠ���</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>158</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		this.rollbackDisabledConn = testConn;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>159</td><td class='count'>1</td>
+      <td><pre class='prettyprint covered' id='l159s0'>		new NonStrictExpectations(rollbackDisabledConn) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>160</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			{</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>161</td><td class='count'>1</td>
+      <td><pre class='prettyprint covered' id='l161s0'>				rollbackDisabledConn.rollback();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>162</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l162s0'>				result = new Delegate&lt;TestConnection>() {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>163</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>					@SuppressWarnings("unused")</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>164</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>					private void rollback() throws SQLException {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>165</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l165s0'>						log.info("(Called mock rollback(). Nothing to do.)");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>166</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l166s0'>					}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>167</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				};</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>168</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>169</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		};</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>170</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		this.dbunitConn = DbUnitUtils.getDbUnitConnection(conn, DbConnection.getSchema());</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>171</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �V�����R�l�N�V�������擾���܂��B&lt;br/>
+	 * ���̃R�l�N�V������{@link Connection#commit()}���R�[�����ꂽ�ꍇ�ł��R�~�b�g���ꂸ�A�g�����U�N�V�������p�����܂��B
+	 * �V�����R�l�N�V�������擾�����ꍇ�́A�K��{@link #releaseConnection(Connection)}�ŉ��Ă��������B
+	 * @return	�R�l�N�V����
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>180</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected Connection newConnection() throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>181</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return DbConnection.getConnection();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>182</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �R�l�N�V���������܂��B
+	 * @param conn	�R�l�N�V����
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>188</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected void releaseConnection(Connection conn) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>189</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		DbUtils.rollbackAndCloseQuietly(conn);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>190</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �R�~�b�g�ƃ��[���o�b�N�𖳌�ɂ����R�l�N�V�������擾���܂��B&lt;br/>
+	 * ���̃R�l�N�V������{@link #conn}�Ɠ����g�����U�N�V�����ɂȂ�܂����A
+	 * ���̃��\�b�h�Ŏ擾�����R�l�N�V�����̂݁A���[���o�b�N������ɂȂ�܂��B&lt;br/>
+	 * �Ăяo������&lt;code>{@link #conn}.rollback()&lt;/code>���R�[������ƁA���̃R�l�N�V�����̃g�����N�U�N�V���������[���o�b�N���邱�Ƃ��\�ł��B
+	 *
+	 * @return ���[���o�b�N�𖳌�ɂ����R�l�N�V����
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>200</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected Connection getRollbackDisabledConnection() {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>201</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return rollbackDisabledConn;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>202</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �t�@�C��������File�N���X��Ԃ��܂��B&lt;br/>
+	 * �t�@�C���͗��p����N���X�Ɠ��K�w�́uresources�v�p�b�P�[�W���ɑ��݂���K�v������܂��B&lt;br/>
+	 * jp.co.worksap.settle.SettleTest ���牺�L�̂悤�ɌĂяo�����ꍇ�A&lt;br/>
+	 * �t�@�C���́ujp.co.worksap.settle.resources.test.xls�v�ɂ���Ƃ݂Ȃ���܂��B
+	 * &lt;pre>
+	 * getResourceFile("test.xls"); // ���\�[�X��resources�����ɂ���ꍇ
+	 * getResourceFile("foo/test.xls"); // ���\�[�X��resources/foo�ɂ���ꍇ
+	 * &lt;/pre>
+	 * @param fileName
+	 * @return File
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>217</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected File getResourceFile(String fileName) throws Exception {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>219</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		StringBuilder resourcePathBuff = new StringBuilder();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>220</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		resourcePathBuff.append(this.getClass().getPackage().getName().replaceAll("\\.", "/"));</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>221</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		resourcePathBuff.append("/resources/");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>222</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		resourcePathBuff.append(fileName);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>224</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		URL url = this.getClass().getClassLoader().getResource(resourcePathBuff.toString());</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>225</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		if (url == null) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>226</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			throw new Exception(resourcePathBuff.toString() + " is not found or unauthorized.");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>227</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>229</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		File file;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>230</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		try {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>231</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			file = new File(url.toURI());</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>232</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		} catch (URISyntaxException e) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>233</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			throw new Exception(url.toString() + " is not found.", e);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>234</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>235</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		if (!file.exists()) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>236</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			throw new Exception(file.toString() + " is not found.");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>237</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>238</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return file;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>239</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �t�@�C������f�[�^�x�[�X�Ƀf�[�^��}��܂��B&lt;br/>
+	 * �t�@�C���̎w���@��{@link #loadResourceFile(String)}�̐������Q�l�ɂ��Ă��������B
+	 *
+	 * @param fileName
+	 * @throws Exception
+	 * @see #loadResourceFile(String)
+	 * @see #insertFrom(String, PrimaryKey...)
+	 * @return �}��{@link IDataSet}
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>251</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected IDataSet insertFrom(String fileName) throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>252</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return insertFrom(fileName, (PrimaryKey[])null);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>253</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �t�@�C������f�[�^�x�[�X�Ƀf�[�^��}��܂��B&lt;br/>
+	 * ���̃��\�b�h�͐ÓI�Ƀv���C�}���[�L�[���w�肷��ׁA{@link #insertFrom(String)}���������ɓ��삵�܂��B
+	 * �t�@�C���̎w���@��{@link #loadResourceFile(String)}�̐������Q�l�ɂ��Ă��������B
+	 *
+	 * @param fileName
+	 * @param primaryKeys
+	 * @throws Exception
+	 * @return �}��{@link IDataSet}
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>265</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected IDataSet insertFrom(String fileName, PrimaryKey... primaryKeys) throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>266</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return dbOperate(DatabaseOperation.INSERT, fileName, primaryKeys);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>267</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �t�@�C������f�[�^�x�[�X�Ƀf�[�^��}��܂��B&lt;br/>
+	 * ���̃��\�b�h�͐ÓI�Ƀv���C�}���[�L�[���w�肷��ׁA{@link #insertFrom(String)}���������ɓ��삵�܂��B
+	 * �t�@�C���̎w���@��{@link #loadResourceFile(String)}�̐������Q�l�ɂ��Ă��������B
+	 *
+	 * @param fileName
+	 * @param primaryKeys
+	 * @throws Exception
+	 * @return �}��{@link IDataSet}
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>279</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected IDataSet refresh(String fileName, PrimaryKey... primaryKeys) throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>280</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return dbOperate(DatabaseOperation.REFRESH, fileName, primaryKeys);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>281</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * DB����
+	 * @param operation		DB����
+	 * @param fileName		�t�@�C����
+	 * @param primaryKeys
+	 * @return	Dataset
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>291</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	private IDataSet dbOperate(DatabaseOperation operation, String fileName, PrimaryKey... primaryKeys)</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>292</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			throws Exception {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>294</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		StaticColumnFilter filter = null;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>295</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		if ((primaryKeys != null) && (primaryKeys.length > 0)) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>296</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			filter = new StaticColumnFilter(primaryKeys);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>297</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>299</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		DatabaseConfig config = dbunitConn.getConfig();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>300</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		IColumnFilter orginalFilter = null;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>301</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		if (filter != null) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>302</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			orginalFilter = (IColumnFilter)config.getProperty(DatabaseConfig.PROPERTY_PRIMARY_KEY_FILTER);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>303</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			config.setProperty(DatabaseConfig.PROPERTY_PRIMARY_KEY_FILTER, filter);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>304</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>305</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		config.setProperty(DatabaseConfig.PROPERTY_DATATYPE_FACTORY, new OracleDataTypeFactory());</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>307</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		try {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>308</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			IDataSet ds = loadResourceFile(fileName);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>309</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			operation.execute(dbunitConn, ds);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>310</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			return ds;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>311</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		} finally {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>312</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			if (filter != null) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>313</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				config.setProperty(DatabaseConfig.PROPERTY_PRIMARY_KEY_FILTER, orginalFilter);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>314</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>315</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>316</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * SQL�ɂ�郌�R�[�h�擾
+	 * @param tableName	�e�[�u����
+	 * @param sql		SQL
+	 * @return	���R�[�h�iMAP�j���X�g
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>325</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected List&lt;Map&lt;String, Object>> getRecordsFromSql(String tableName, String sql) throws Exception {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>327</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		List&lt;Map&lt;String, Object>> records = new ArrayList&lt;Map&lt;String, Object>>();</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>329</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		ITable table = dbunitConn.createQueryTable(tableName, sql);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>331</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		ITableMetaData tableMetaData = table.getTableMetaData();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>332</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		int rowCount = table.getRowCount();</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>334</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		for (int i = 0; i &lt; rowCount; i++) {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>336</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			Map&lt;String, Object> record = new HashMap&lt;String, Object>();</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>338</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			for (Column column : tableMetaData.getColumns()) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>339</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				String key = column.getColumnName();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>340</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				Object value = table.getValue(i, key);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>341</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				record.put(key, value);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>342</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>344</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			records.add(record);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>345</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>347</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return records;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>348</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * IDataSet���烌�R�[�h�擾
+	 * @param dataset	�f�[�^�Z�b�g
+	 * @param tableName	�e�[�u����
+	 * @return	���R�[�h�iMAP�j���X�g
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>357</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected List&lt;Map&lt;String, Object>> getRecordsFromIDataSet(IDataSet dataset, String tableName) throws Exception {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>359</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		List&lt;Map&lt;String, Object>> records = new ArrayList&lt;Map&lt;String, Object>>();</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>361</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		String[] colNames = getColsFromDataSet(dataset, tableName);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>363</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		ITable table = dataset.getTable(tableName);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>365</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		int rowCount = table.getRowCount();</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>367</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		for (int i = 0; i &lt; rowCount; i++) {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>369</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			Map&lt;String, Object> record = new HashMap&lt;String, Object>();</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>371</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			for (String colName : colNames) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>372</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				Object value = table.getValue(i, colName);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>373</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>				record.put(colName, value);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>374</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>376</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			records.add(record);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>377</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>379</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return records;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>380</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * ��Ғl�f�[�^�Z�b�g�擾
+	 * @param testMethod	�e�X�g���\�b�h��
+	 * @return	�f�[�^�Z�b�g
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>388</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected IDataSet getExpectedDataset(String testMethod) throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>389</td><td>&nbsp;</td>
+      <td><pre class='comment'>		// ���ʌ���</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>390</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		String resourceFolder = getResourceFolder(testMethod);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>392</td><td>&nbsp;</td>
+      <td><pre class='comment'>		// ���̑��͌��ʃf�[�^Excel����</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>393</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		String fileName = resourceFolder + "/expected.xls";</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>395</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return (ReplacementDataSet)loadResourceFile(fileName);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>396</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * ����f�[�^��IDataSet�ɕϊ�&lt;br>
+	 * �u��������ɑΉ�����f�[�^�^���w�肷��B
+	 * @param fileName	����f�[�^�̃t�@�C����
+	 * @return	����DataSet
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>405</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected IDataSet loadResourceFile(String fileName) throws Exception {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>407</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		File file = getResourceFile(fileName);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>409</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		Map&lt;Object, Object> replacements = new HashMap&lt;Object, Object>();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>410</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		setReplacement(replacements);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>412</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return DbUnitUtils.newDataSet(file, replacements);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>413</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �u��������ɑΉ�����f�[�^�^���w�肷��B
+	 * @param replacements	�u�����[��Map
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>419</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected void setReplacement(Map&lt;Object, Object> replacements) {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>421</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		Date today = new Date();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>422</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		Date truncToday = DateUtils.truncate(today, Calendar.DAY_OF_MONTH);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>423</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		Date yesterDay = DateUtils.addDays(today, -1);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>424</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		Date truncYesterDay = DateUtils.truncate(yesterDay, Calendar.DAY_OF_MONTH);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>425</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		Date daysBefore3 = DateUtils.addDays(new Date(), -3);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>426</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		Date truncDaysBefore3 = DateUtils.truncate(daysBefore3, Calendar.DAY_OF_MONTH);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>428</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		replacements.put("[NULL]", null);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>429</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		replacements.put("[BLANK]", "");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>430</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		replacements.put("[NOW]", new Date(System.currentTimeMillis()));</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>431</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		replacements.put("[TODAY]", truncToday);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>432</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		replacements.put("[YESTERDAY]", truncYesterDay);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>433</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		replacements.put("[3DAYSBEFORE]", truncDaysBefore3);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>434</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		replacements.put("[SYSDATE]", new Timestamp(System.currentTimeMillis()));</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>435</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		replacements.put("[PREDAY]", DateFormatUtils.format(yesterDay, "yyyyMMdd"));</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>436</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		replacements.put("[YYYYMMDD]", DateFormatUtils.format(new Date(), "yyyyMMdd"));</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>438</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		addReplacement(replacements);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>439</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �u��������ɑΉ�����f�[�^�^��ǉ��w�肷��B&lt;br>
+	 * ��̉��͌ʃe�X�g�N���X�ɂ�
+	 * @param replacements	�u�����[��Map
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>446</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected void addReplacement(Map&lt;Object, Object> replacements) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>447</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * ��ҒlDataset���猟�ؑΏۃJ�������擾����
+	 * @param dataset	��Ғl
+	 * @param tableName	�e�[�u����
+	 * @return	���ؑΏۃJ����
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>456</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	private String[] getColsFromDataSet(IDataSet dataset, String tableName) throws Exception {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>458</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		ITableMetaData tableMetaData = dataset.getTableMetaData(tableName);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>460</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		Column[] columns = tableMetaData.getColumns();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>461</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		String[] colNames = new String[columns.length];</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>463</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		for (int i = 0; i &lt; columns.length; i++) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>464</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			Column column = columns[i];</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>465</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			colNames[i] = column.getColumnName();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>466</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>468</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return colNames;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>469</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * ���\�[�X�t�H���_���擾����B&lt;br>
+	 * "�N���X���^���[�UID"
+	 * @param testMethod
+	 * @return	���\�[�X�t�H���_
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>477</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected String getResourceFolder(String testMethod) {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>478</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		String className = this.getClass().getSimpleName();</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>479</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		return className + "/" + testMethod;</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>480</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �������&lt;br>
+	 * �����f�[�^�𓊓��
+	 * @param testMethod
+	 * @param pks	primary keys
+	 * @throws Throwable
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>489</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected void prepare(String testMethod, PrimaryKey... pks) throws Throwable {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>491</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		String resourceFolder = getResourceFolder(testMethod);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>493</td><td>&nbsp;</td>
+      <td><pre class='comment'>		// �f�[�^����</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>494</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		refresh(resourceFolder + "/input.xls");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>495</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * �e�[�u��������
+	 * @param dataset
+	 * @param sql
+	 * @param tableName
+	 * @param ignoreColumns
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>505</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	protected void assertTable(IDataSet dataset, String sql, String tableName, String... ignoreColumns)</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>506</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>			throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>507</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>		Assertion.assertEqualsByQuery(dataset, dbunitConn, sql, tableName, ignoreColumns);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>508</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>509</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>}</pre></td>
+    </tr>
+  </table>
+</body>
+</html>

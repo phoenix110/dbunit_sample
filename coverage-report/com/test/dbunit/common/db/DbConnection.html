@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>JMockit Coverage Report - DbConnection.java</title>
+  <meta http-equiv='Content-Type' content='text/html; charset=UTF-8'/>
+  <link rel='stylesheet' type='text/css' href='../../../../../coverage.css'/>
+  <script type='text/javascript' src='../../../../../coverage.js'></script>
+  <script type='text/javascript' src='../../../../../prettify.js'></script>
+</head>
+<body onload='prettyPrint()'>
+  <table cellpadding='0' cellspacing='1'>
+    <caption>dbunit_sample\src\com\test\dbunit\common\db\DbConnection.java</caption>
+    <tr>
+      <td class='line'>1</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>package com.test.dbunit.common.db;</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td><pre class='imports prettyprint' onclick='showHideLines(this)'><div>import java.sql.Connection;
+import java.sql.DriverManager;
+import java.util.ResourceBundle;
+</div><span>import ...</span></pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>/**
+ * DBコネクション取得
+ * @author c.k.song
+ *
+ */</div><span>/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>12</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>public class DbConnection {</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>14</td><td>&nbsp;</td>
+      <td><pre class='comment'>	/** db.properties */</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>15</td><td class='count'>1</td>
+      <td><pre class='prettyprint covered' id='l15s0'>	private static ResourceBundle <span class='static covered' title='Reads: 9 Writes: 0'>bundle</span> = ResourceBundle.getBundle("db");</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * インスタンス化抑制用コンストラクタ
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>20</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l20s0'>	private DbConnection() {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>21</td><td class='count'>0</td>
+      <td><pre class='prettyprint uncovered' id='l21s0'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * DBコネクションを取得する。
+	 * アクセス情報はdb.propertiesから取得する
+	 * @return	DBコネクション
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>29</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	public static Connection getConnection() throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>30</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l30s0'>		String driver = bundle.getString("db.driver");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>31</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l31s0'>		String url = bundle.getString("db.url");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>32</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l32s0'>		String user = bundle.getString("db.user");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>33</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l33s0'>		String password = bundle.getString("db.password");</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>35</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l35s0'>		return getConnection(driver, url, user, password);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>36</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * DBスキーマを取得する。
+	 * アクセス情報はdb.propertiesから取得する
+	 * @return	 DBスキーマ
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>44</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	public static String getSchema() throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>45</td><td class='count'>1</td>
+      <td><pre class='prettyprint covered' id='l45s0'>		return bundle.getString("db.schema");</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>46</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'></td><td>&nbsp;</td>
+      <td class='comment' onclick='showHideLines(this)'><div>	/**
+	 * DBコネクションを取得する。
+	 * @param driver	JDBCドライバー名
+	 * @param url		DBのURL
+	 * @param user		DBユーザID
+	 * @param password	DBユーザのパスワード
+	 * @return	DBコネクション
+	 * @throws Exception
+	 */</div><span>	/*...*/</span></td>
+    </tr>
+    <tr>
+      <td class='line'>57</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	public static Connection getConnection(String driver, String url, String user, String password) throws Exception {</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>58</td><td>&nbsp;</td>
+      <td><pre class='comment'>		//JDBCドライバーをセット</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>59</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l59s0'>		Class.forName(driver);</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>60</td><td>&nbsp;</td>
+      <td><pre class='comment'>		//Connectionの取得</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>61</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l61s0'>		Connection conn = DriverManager.getConnection(url, user, password);</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>63</td><td class='count'>2</td>
+      <td><pre class='prettyprint covered' id='l63s0'>		return conn;</pre></td>
+    </tr>
+    <tr><td class='line'></td><td colspan='2'>&nbsp;</td></tr>
+    <tr>
+      <td class='line'>65</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>	}</pre></td>
+    </tr>
+    <tr>
+      <td class='line'>66</td><td>&nbsp;</td>
+      <td><pre class='prettyprint'>}</pre></td>
+    </tr>
+  </table>
+</body>
+</html>
